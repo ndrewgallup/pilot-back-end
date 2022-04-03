@@ -12,27 +12,7 @@ async function index (req, res) {
   } catch(err) {
     return res.status(500).json(err)
   }
-  // Location.find({})
-  // .populate('owner')
-  // .then(locations => {
-  //   return res.json(locations)
-  // })
-  // .catch(err => {
-  //   res.json(err)
-  // })
 }
-
-// async function create(req, res) {
-//   console.log(req.body)
-//   try{
-//     req.body.owner = req.user.profile
-//     const location = new Location(req.body)
-//     await location.save()
-//     return res.status(201).json(location)
-//   } catch(err) {
-//     return res.status(500).json(err)
-//   }
-// }
 
 function create(req, res) {
   req.body.owner = req.user.profile
@@ -81,13 +61,9 @@ function create(req, res) {
     }
   }
 
-
-
 function getLocation(req, res) {
-  console.log('THIS IS WHAT NAME IS', req.params.name)
   axios.get(`https://dev.virtualearth.net/REST/v1/Imagery/Map/AerialWithLabels/landmark=${req.params.name}?mapSize=500,400&key=${process.env.API_KEY}&o=json`)
   .then(apiResponse => {
-
     res.set('Content-Type', 'image/jpeg')
     res.send(Buffer.from(apiResponse.data, 'binary').toString('base64'))
     res.send(apiResponse.data)
