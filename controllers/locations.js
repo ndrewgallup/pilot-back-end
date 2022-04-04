@@ -4,6 +4,7 @@ import {v2 as cloudinary} from 'cloudinary'
 
 
 async function index (req, res) {
+  console.log('yo')
   try {
     Location.find({})
     .populate('owner')
@@ -16,8 +17,7 @@ async function index (req, res) {
 
 function create(req, res) {
   req.body.owner = req.user.profile
-  if (req.body.pictures === 'undefined' || !req.files['pictures']) {
-    delete req.body['pictures']
+  if (!req.files['pictures']) {
     Location.create(req.body)
     .then(location => {
       location.populate('owner')
@@ -30,14 +30,15 @@ function create(req, res) {
       res.status(500).json(err)
     })
   } else {
-    const imageFile = req.files.pictures.path
-    cloudinary.uploader.upload(imageFile, {tags: `${req.body.name}`})
+    cloudinary.uploader.upload(req.files.pictures.path)
     .then(picture => {
+      console.log(picture)
       req.body.pictures = picture.url
       Location.create(req.body)
       .then(location => {
         location.populate('owner')
         .then(populatedLocation => {
+          console.log(populatedLocation)
           res.status(201).json(populatedLocation)
         })
       })
