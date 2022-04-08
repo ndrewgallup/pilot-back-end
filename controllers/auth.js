@@ -13,6 +13,9 @@ function signup(req, res) {
     } else {
       if (req.body.photo === 'undefined' || !req.files['photo']) {
         delete req.body['photo']
+        req.body.pilot = {
+          canPilot: req.body.pilot, 
+          hasKayakSUP: req.body.kayakSUP}
         Profile.create(req.body)
         .then(newProfile => {
           req.body.profile = newProfile._id
@@ -32,6 +35,9 @@ function signup(req, res) {
         cloudinary.uploader.upload(imageFile, {tags: `${req.body.name}`})
         .then(image => {
           req.body.photo = image.url
+          req.body.pilot = {
+            canPilot: req.body.pilot, 
+            hasKayakSUP: req.body.kayakSUP}
           Profile.create(req.body)
           .then(newProfile => {
             req.body.profile = newProfile._id
