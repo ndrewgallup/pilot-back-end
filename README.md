@@ -15,7 +15,7 @@ git clone https://github.com/SEI-Remote/decoupled-mern-jwt-auth-template-back-en
 cd <name-of-your-app-here>-back-end
 ```
 
-Once you are in the project directory:
+Once you are in the project directory do this:
 
 ```bash
 rm -rf .git
